@@ -5,6 +5,7 @@ from flask import render_template
 import sys
 sys.path.append("./testFolder")
 from testFolder import poker as p
+from model import model
 
 app = Flask(__name__, static_url_path="/photo", static_folder="./photo")
 
@@ -104,9 +105,29 @@ def pokers():
     return jsonify(result)
 
 
+@app.route('/poker', methods=['GET', 'POST'])
+def poker():
+    request_method = request.method
+    players = 0
+    cards = dict()
+    if request_method == 'POST':
+        players = int(request.form.get('players'))
+        cards = p.poker(players)
+    return render_template('poker.html', request_method=request_method,
+                                         cards=cards)
+
+
 @app.route("/getimage")
 def getimage():
     return """hcljvcklzjvclx;<img src="/static/google.png">"""
+
+
+@app.route('/show_staff')
+def hello_google():
+    staff_data = model.getStaff()
+    column = ['ID', 'Name', 'DeptId', 'Age', 'Gender', 'Salary']
+    return render_template('show_staff.html', staff_data=staff_data,
+                                              column=column)
 
 
 if __name__ == '__main__':
