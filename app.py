@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 from flask import jsonify
+from flask import render_template
 import sys
 sys.path.append("./testFolder")
 from testFolder import poker as p
@@ -13,11 +14,21 @@ def test():
     return "<h1>Hello Flask!</h1><br>123123123321321321"
 
 
+# @app.route("/hello/<username>")
+# def hello(username):
+#     output = "<h1>Hello {}!</h1>".format(username)
+#     print(username)
+#     return output
+
+
 @app.route("/hello/<username>")
 def hello(username):
     output = "<h1>Hello {}!</h1>".format(username)
     print(username)
-    return output
+    return render_template(
+        "hello.html",
+        username=username
+    )
 
 
 @app.route("/addTowNumber/<x>/<y>")
