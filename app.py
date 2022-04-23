@@ -90,6 +90,11 @@ def hello_post():
 
     return htmlStr
 
+@app.route("/hello_post2", methods=["GET", "POST"])
+def hello_post2():
+    method = request.method
+    username = "" if method == "GET" else request.form.get("username")
+    return render_template("hello_post.html", method=method, username=username)
 
 # /pokers?players=5
 @app.route("/pokers")
