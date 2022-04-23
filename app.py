@@ -1,7 +1,11 @@
 from flask import Flask
 from flask import request
+from flask import jsonify
+import sys
+sys.path.append("./testFolder")
+from testFolder import poker as p
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="/photo", static_folder="./photo")
 
 
 @app.route("/")
@@ -74,6 +78,19 @@ def hello_post():
         """.format(username)
 
     return htmlStr
+
+
+# /pokers?players=5
+@app.route("/pokers")
+def pokers():
+    players = int(request.args.get("players"))
+    result = p.poker(players)
+    return jsonify(result)
+
+
+@app.route("/getimage")
+def getimage():
+    return """hcljvcklzjvclx;<img src="/static/google.png">"""
 
 
 if __name__ == '__main__':
